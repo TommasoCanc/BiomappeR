@@ -63,7 +63,7 @@ server <- function(input, output) {
     
     # Merge shp and richness (marine)
     sea.map.reactive <- reactive({
-        sea <- st_read("./bio_sea/bio_sea_4326.shp")
+        sea <- st_read("./bio_sea/bio_sea_IT_4326.shp")
         sea <- merge(sea, sea.reactive(), by = "ID") # Merge shapefile with richness data
     })
     
