@@ -1,0 +1,18 @@
+########
+# Link #
+########
+
+Biogeographic sectors: Bianchi, C.N. (2004). Proposta di suddivisione dei mari italiani in settori biogeografici. Notiziario S.i.B.M. 46: 57-59 
+
+BS_01: https://www.marineregions.org/gazetteer.php?p=details&id=63500
+BS_02: https://www.marineregions.org/gazetteer.php?p=details&id=63501
+BS_03: https://www.marineregions.org/gazetteer.php?p=details&id=63502
+BS_04: https://www.marineregions.org/gazetteer.php?p=details&id=63503
+BS_05: https://www.marineregions.org/gazetteer.php?p=details&id=63504
+BS_06: https://www.marineregions.org/gazetteer.php?p=details&id=63505
+BS_07: https://www.marineregions.org/gazetteer.php?p=details&id=63506
+BS_08: https://www.marineregions.org/gazetteer.php?p=details&id=63507
+BS_09: https://www.marineregions.org/gazetteer.php?p=details&id=63508
+
+Terrestial biogeographic region: https://www.eea.europa.eu/data-and-maps/data/biogeographical-regions-europe-3
+Marine italian boundary: https://www.marineregions.org/gazetteer.php?p=details&id=5682

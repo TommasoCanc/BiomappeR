@@ -1,6 +1,6 @@
-##n##############################
-# Shiny App FaunaMap v 0.1 - UI #
-#################################
+##n###############################
+# Shiny App BiomappeR v 0.1 - UI #
+##################################
 
 # Load libraries
 library(shiny)
@@ -31,66 +31,69 @@ ui <- dashboardPage(skin = "green",
 
 # Body
     dashboardBody(
+        tags$head(tags$style(source("./css.R")$value)),
+        
         tabItems(
             # First tab content
             tabItem(tabName = "IntMap",
                     fluidRow(
-                        column(width = 2 ,
+                        column(width = 12 ,
                                box(title = "Terrestrial regions", solidHeader = FALSE, width = NULL, collapsible = TRUE, collapsed = TRUE,
-                                   HTML("Insert the taxa richness for each Italian region"),
-                                   numericInput("abruzzo", "Abruzzo", 0),
-                                   numericInput("basilicata", "Basilicata", 0),
-                                   numericInput("calabria", "Calabria", 0),
-                                   numericInput("campania", "Campania", 0),
-                                   numericInput("emilia", "Emilia-Romagna", 0),
-                                   numericInput("friuli", "Friuli-Venezia Giulia", 0),
-                                   numericInput("lazio", "Lazio", 0),
-                                   numericInput("liguria", "Liguria", 0),
-                                   numericInput("lombardia", "Lombardia", 0),
-                                   numericInput("marche", "Marche", 0),
-                                   numericInput("molise", "Molise", 0),
-                                   numericInput("piemonte", "Piemonte", 0),
-                                   numericInput("puglia", "Puglia", 0),
-                                   numericInput("sardegna", "Sardegna", 0),
-                                   numericInput("sicilia", "Sicilia", 0),
-                                   numericInput("toscana", "Toscana", 0),
-                                   numericInput("trentino", "Trentino-Alto Adige", 0),
-                                   numericInput("umbria", "Umbria", 0),
-                                   numericInput("aosta", "Valle d'Aosta", 0),
-                                   numericInput("veneto", "Veneto", 0),
-                                   numericInput("vaticano", "Cittá del Vaticano", 0),
-                                   numericInput("smarino", "San Marino", 0)
+                                   HTML("Insert the taxa richness for each Italian region <br>"),
+                                   column(2, numericInput("abruzzo", "Abruzzo", 0)),
+                                   column(2, numericInput("basilicata", "Basilicata", 0)),
+                                   column(2, numericInput("calabria", "Calabria", 0)),
+                                   column(2, numericInput("campania", "Campania", 0)),
+                                   column(2, numericInput("emilia", "Emilia-Romagna", 0)),
+                                   column(2, numericInput("friuli", "Friuli-Venezia Giulia", 0)),
+                                   column(2, numericInput("lazio", "Lazio", 0)),
+                                   column(2, numericInput("liguria", "Liguria", 0)),
+                                   column(2, numericInput("lombardia", "Lombardia", 0)),
+                                   column(2, numericInput("marche", "Marche", 0)),
+                                   column(2, numericInput("molise", "Molise", 0)),
+                                   column(2, numericInput("piemonte", "Piemonte", 0)),
+                                   column(2, numericInput("puglia", "Puglia", 0)),
+                                   column(2, numericInput("sardegna", "Sardegna", 0)),
+                                   column(2, numericInput("sicilia", "Sicilia", 0)),
+                                   column(2, numericInput("toscana", "Toscana", 0)),
+                                   column(2, numericInput("trentino", "Trentino-Alto Adige", 0)),
+                                   column(2, numericInput("umbria", "Umbria", 0)),
+                                   column(2, numericInput("aosta", "Valle d'Aosta", 0)),
+                                   column(2, numericInput("veneto", "Veneto", 0)),
+                                   column(2, numericInput("vaticano", "Cittá del Vaticano", 0)),
+                                   column(2, numericInput("smarino", "San Marino", 0))
                                ),
                                
                                box(title = "Marine regions", solidHeader = FALSE, width = NULL, collapsible = TRUE, collapsed = TRUE,
-                                   HTML("Insert the taxa richness for each marine region"),
-                                   numericInput("m1", "Sector 1", 0),
-                                   numericInput("m2", "Sector 2", 0),
-                                   numericInput("m3", "Sector 3", 0),
-                                   numericInput("m4", "Sector 4", 0),
-                                   numericInput("m5", "Sector 5", 0),
-                                   numericInput("m6", "Sector 6", 0),
-                                   numericInput("m7", "Sector 7", 0),
-                                   numericInput("m8", "Sector 8", 0),
-                                   numericInput("m9", "Sector 9", 0)
+                                   HTML("Insert the taxa richness for each marine region <br>"),
+                                   column(2, numericInput("m1", "Sector 1", 0)),
+                                   column(2, numericInput("m2", "Sector 2", 0)),
+                                   column(2, numericInput("m3", "Sector 3", 0)),
+                                   column(2, numericInput("m4", "Sector 4", 0)),
+                                   column(2, numericInput("m5", "Sector 5", 0)),
+                                   column(2, numericInput("m6", "Sector 6", 0)),
+                                   column(2, numericInput("m7", "Sector 7", 0)),
+                                   column(2, numericInput("m8", "Sector 8", 0)),
+                                   column(2, numericInput("m9", "Sector 9", 0))
                                ),
                                
-                               box(title = "Plot map", solidHeader = FALSE, width = NULL,
-                                   
-                                   numericInput("ter.bins", "Terrestial n. Bins", 2),
-                                   numericInput("sea.bins", "Marine n. Bins", 2),
+                               box(title = "Terrestial Biogeographic regions", solidHeader = FALSE, width = NULL, collapsible = TRUE, collapsed = TRUE,
+                                   HTML("Insert the taxa richness for each terrestial biogeographic regions <br>"),
+                                   column(2, numericInput("alp", "Alpine", 0)),
+                                   column(2, numericInput("con", "Continental", 0)),
+                                   column(2, numericInput("med", "Mediterranean", 0))
+                               ),
+                               
+                               box(title = "Plot map", solidHeader = FALSE, width = NULL, collapsible = TRUE, collapsed = FALSE,
+                                   column(2, numericInput("ter_bins", "Terrestial n. Bins", 2)),
+                                   column(2, numericInput("sea_bins", "Marine n. Bins", 2)),
+                                   numericInput("terBio_bins", "TerBioreg n. Bins", 2),
                                    checkboxInput("plotMap", "Plot interactive map", value = FALSE),
                                    uiOutput("download.Map")
                                    )
-                               
-                               
                           ),
                         
-                        #############
-                        # Left side #
-                        #############
-                        
-                        column(width = 8,
+                        column(width = 12,
                                leafletOutput("myMap")
                                )
                         )

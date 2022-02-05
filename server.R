@@ -1,6 +1,6 @@
-##n##################################
-# Shiny App FaunaMap v 0.1 - SERVER #
-#####################################
+##n###################################
+# Shiny App Biomapper v 0.1 - SERVER #
+######################################
 
 server <- function(input, output) { 
      
@@ -54,6 +54,19 @@ server <- function(input, output) {
         return(mar.df)
     })
     
+    # Terrestial biogeographic regions dataframe ----
+    terBio.reactive <- reactive({
+      
+      terBio.df <- as.data.frame(t(data.frame(ALP = input$alp, # Alpine
+                                              CON = input$con, # Continental
+                                              MED = input$med  # Mediterranean
+      )))
+      
+      colnames(terBio.df) <- "richness"
+      terBio.df$ID <- rownames(terBio.df)
+      return(terBio.df)
+    })
+    
     
     # Merge shp and richness (terrestrial)
     ter.map.reactive <- reactive({
@@ -67,6 +80,11 @@ server <- function(input, output) {
         sea <- merge(sea, sea.reactive(), by = "ID") # Merge shapefile with richness data
     })
     
+    # Merge shp and richness (terrestiab biogegraphic regions)
+    terBio.map.reactive <- reactive({
+      terBio <- st_read("./Terrestrial_biogeographic/terBiogeographic_4326.shp")
+      terBio <- merge(terBio, terBio.reactive(), by = "ID") # Merge shapefile with richness data
+    })
 
     
     
@@ -75,40 +93,58 @@ server <- function(input, output) {
       
       if(input$plotMap == 1){
         
+        # Terrestrial regions ----
          if(length(which(ter.map.reactive()$richness > 0)) >= 2){
            mypalette.ter <- colorBin(palette = "Greys", domain=ter.map.reactive()$richness, 
-                                     na.color="transparent", bins=input$ter.bins)
+                                     na.color="transparent", bins=input$ter_bins)
          } else{
            mypalette.ter <- colorNumeric(palette = "white", domain = 1, 
                                          na.color = "transparent", alpha = FALSE, reverse = FALSE)
          } 
        
-        
+        # Sea bioregions ----
           if(length(which(sea.map.reactive()$richness > 0)) >= 2){
             mypalette.sea <- colorBin(palette="Blues", domain=sea.map.reactive()$richness, 
-                                      na.color="transparent", bins=input$sea.bins)
+                                      na.color="transparent", bins=input$sea_bins)
           } else{
             mypalette.sea <- colorNumeric(palette = "white", domain = 1,
                                           na.color = "transparent", alpha = FALSE, reverse = FALSE)
           }
         
+        # Terrestrial biogeographic regions ----
+        if(length(which(terBio.map.reactive()$richness > 0)) >= 2){
+          mypalette.terBio <- colorBin(palette="Purples", domain=terBio.map.reactive()$richness, 
+                                       na.color="transparent", bins=input$terBio_bins)
+        } else{
+          mypalette.terBio <- colorNumeric(palette = "white", domain = 1,
+                                           na.color = "transparent", alpha = FALSE, reverse = FALSE)
+        }
         
+        # Terrestrial regions ----
         text.ter <- paste(
           "ID: ", ter.map.reactive()$ID,"<br/>", 
           "Region: ", ter.map.reactive()$NAME, "<br/>", 
           "Richness: ", ter.map.reactive()$richness, 
           sep="") %>%
           lapply(htmltools::HTML)
-        
+        # Sea bioregions ----
         text.sea <- paste(
           "ID: ", sea.map.reactive()$ID,"<br/>", 
           "Bioregion: ", sea.map.reactive()$NAME, "<br/>", 
           "Richness: ", sea.map.reactive()$richness, 
           sep="") %>%
           lapply(htmltools::HTML)
+        # Terrestrial biogeographic regions ----
+        text.terBio <- paste(
+          "ID: ", terBio.map.reactive()$ID,"<br/>", 
+          "Bioregion: ", terBio.map.reactive()$NAME, "<br/>", 
+          "Richness: ", terBio.map.reactive()$richness, 
+          sep="") %>%
+          lapply(htmltools::HTML)
         
         map <- leaflet() %>% 
           addProviderTiles("CartoDB.Positron")  %>% 
+          # Terrestrial regions ----
           addPolygons(data = ter.map.reactive(),
                       fillColor = ~mypalette.ter(richness), 
                       stroke=TRUE, 
@@ -122,6 +158,7 @@ server <- function(input, output) {
                         direction = "auto"
                       ),
                       group = "terrestrial.group") %>% 
+          # Sea bioregions ----
           addPolygons(data = sea.map.reactive(),
                       fillColor = ~mypalette.sea(richness), 
                       stroke=TRUE, 
@@ -134,15 +171,36 @@ server <- function(input, output) {
                         textsize = "13px", 
                         direction = "auto"
                       ), group = "marine.group") %>%  
+          # Terrestrial biogeographic regions ----
+        addPolygons(data = terBio.map.reactive(),
+                    fillColor = ~mypalette.terBio(richness), 
+                    stroke=TRUE, 
+                    fillOpacity = 0.9, 
+                    color="black", 
+                    weight=0.3,
+                    label = text.terBio,
+                    labelOptions = labelOptions( 
+                      style = list("font-weight" = "normal", padding = "3px 8px"), 
+                      textsize = "13px", 
+                      direction = "auto"
+                    ), group = "terBioreg.group") %>%  
+        
+        
           addLegend("bottomright", pal = mypalette.ter, title="Terrestrial",
                                               values = ter.map.reactive()$richness,
                     group = "terrestrial.group")  %>%
+          
           addLegend("bottomright", pal = mypalette.sea, title="Sea",
                                         values = sea.map.reactive()$richness,
                     group = "marine.group") %>% 
-          addLayersControl(overlayGroups = c("terrestrial.group", "marine.group"), 
+          
+          addLegend("bottomright", pal = mypalette.terBio, title="TerBioreg",
+                    values = terBio.map.reactive()$richness,
+                    group = "terBioreg.group") %>% 
+          
+          addLayersControl(overlayGroups = c("terrestrial.group", "marine.group", "terBioreg.group"), 
                            options = layersControlOptions(collapsed = FALSE)) %>% 
-          hideGroup(c("terrestrial.group", "marine.group"))
+          hideGroup(c("terrestrial.group", "marine.group", "terBioreg.group"))
         
         
       } else {
