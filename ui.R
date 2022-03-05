@@ -19,13 +19,15 @@ library(grid)
 ui <- dashboardPage(skin = "green",
     
 # Title header                                    
-    dashboardHeader(title = "FaunaMap v. 1.0"),
+    dashboardHeader(title = "BioMappeR v. 1.0"),
 
 # Left sidebar    
     dashboardSidebar(
         sidebarMenu(
-            #menuItem("About FaunaMap", tabName = "about"),
-            menuItem("Interactive Map", tabName = "IntMap")
+            menuItem("About BioMappeR", tabName = "about"),
+            menuItem("Interactive Map", tabName = "IntMap"),
+            menuItem("Help", tabName = "help"),
+            menuItem("Bibliography", tabName = "biblio")
             )
     ),
 
@@ -37,31 +39,43 @@ ui <- dashboardPage(skin = "green",
             # First tab content
             tabItem(tabName = "IntMap",
                     fluidRow(
-                        column(width = 12 ,
+                        column(width = 6,
                                box(title = "Terrestrial regions", solidHeader = FALSE, width = NULL, collapsible = TRUE, collapsed = TRUE,
-                                   HTML("Insert the taxa richness for each Italian region <br>"),
-                                   column(2, numericInput("abruzzo", "Abruzzo", 0)),
-                                   column(2, numericInput("basilicata", "Basilicata", 0)),
-                                   column(2, numericInput("calabria", "Calabria", 0)),
-                                   column(2, numericInput("campania", "Campania", 0)),
-                                   column(2, numericInput("emilia", "Emilia-Romagna", 0)),
-                                   column(2, numericInput("friuli", "Friuli-Venezia Giulia", 0)),
-                                   column(2, numericInput("lazio", "Lazio", 0)),
-                                   column(2, numericInput("liguria", "Liguria", 0)),
-                                   column(2, numericInput("lombardia", "Lombardia", 0)),
-                                   column(2, numericInput("marche", "Marche", 0)),
-                                   column(2, numericInput("molise", "Molise", 0)),
-                                   column(2, numericInput("piemonte", "Piemonte", 0)),
-                                   column(2, numericInput("puglia", "Puglia", 0)),
-                                   column(2, numericInput("sardegna", "Sardegna", 0)),
-                                   column(2, numericInput("sicilia", "Sicilia", 0)),
-                                   column(2, numericInput("toscana", "Toscana", 0)),
-                                   column(2, numericInput("trentino", "Trentino-Alto Adige", 0)),
-                                   column(2, numericInput("umbria", "Umbria", 0)),
-                                   column(2, numericInput("aosta", "Valle d'Aosta", 0)),
-                                   column(2, numericInput("veneto", "Veneto", 0)),
-                                   column(2, numericInput("vaticano", "Cittá del Vaticano", 0)),
-                                   column(2, numericInput("smarino", "San Marino", 0))
+                                   HTML("Insert the taxa richness for each Italian region 
+                                        <br>
+                                        <b>Note</b>: F.V.G. = Friuli venezia Giulia; T.A.A. = Trentino Alto Adige
+                                        <br>
+                                        <br>"),
+                                   fluidRow(
+                                       column(2, numericInput("abruzzo", "Abruzzo", 0)),
+                                       column(2,numericInput("basilicata", "Basilicata", 0)),
+                                       column(2,numericInput("calabria", "Calabria", 0)),
+                                       column(2, numericInput("campania", "Campania", 0)),
+                                       column(2, numericInput("emilia", "Emilia-Romagna", 0)),
+                                       column(2, numericInput("friuli", "F.V.G.", 0))
+                                   ),
+                                   fluidRow(
+                                       column(2, numericInput("lazio", "Lazio", 0)),
+                                       column(2, numericInput("liguria", "Liguria", 0)),
+                                       column(2, numericInput("lombardia", "Lombardia", 0)),
+                                       column(2, numericInput("marche", "Marche", 0)),
+                                       column(2, numericInput("molise", "Molise", 0)),
+                                       column(2, numericInput("piemonte", "Piemonte", 0))
+                                       ),
+                                   fluidRow(
+                                       column(2, numericInput("puglia", "Puglia", 0)),
+                                       column(2, numericInput("sardegna", "Sardegna", 0)),
+                                       column(2, numericInput("sicilia", "Sicilia", 0)),
+                                       column(2, numericInput("toscana", "Toscana", 0)),
+                                       column(2, numericInput("trentino", "T.A.A.", 0)),
+                                       column(2, numericInput("umbria", "Umbria", 0))
+                                       ),
+                                   fluidRow(
+                                       column(2, numericInput("aosta", "Valle Aosta", 0)),
+                                       column(2, numericInput("veneto", "Veneto", 0)),
+                                       column(2, numericInput("vaticano", "C. Vaticano", 0)),
+                                       column(2, numericInput("smarino", "San Marino", 0))
+                                   )
                                ),
                                
                                box(title = "Marine regions", solidHeader = FALSE, width = NULL, collapsible = TRUE, collapsed = TRUE,
@@ -77,27 +91,41 @@ ui <- dashboardPage(skin = "green",
                                    column(2, numericInput("m9", "Sector 9", 0))
                                ),
                                
-                               box(title = "Terrestial Biogeographic regions", solidHeader = FALSE, width = NULL, collapsible = TRUE, collapsed = TRUE,
-                                   HTML("Insert the taxa richness for each terrestial biogeographic regions <br>"),
-                                   column(2, numericInput("alp", "Alpine", 0)),
-                                   column(2, numericInput("con", "Continental", 0)),
-                                   column(2, numericInput("med", "Mediterranean", 0))
-                               ),
-                               
+                               # box(title = "Terrestial Biogeographic regions", solidHeader = FALSE, width = NULL, collapsible = TRUE, collapsed = TRUE,
+                               #     HTML("Insert the taxa richness for each terrestial biogeographic regions <br>"),
+                               #     column(2, numericInput("alp", "Alpine", 0)),
+                               #     column(2, numericInput("con", "Continental", 0)),
+                               #     column(2, numericInput("med", "Mediterranean", 0))
+                               # ),
+                               # 
                                box(title = "Plot map", solidHeader = FALSE, width = NULL, collapsible = TRUE, collapsed = FALSE,
-                                   column(2, numericInput("ter_bins", "Terrestial n. Bins", 2)),
-                                   column(2, numericInput("sea_bins", "Marine n. Bins", 2)),
-                                   numericInput("terBio_bins", "TerBioreg n. Bins", 2),
+                                   HTML("Insert the number of bins 
+                                        <br>
+                                        <b>Note</b>: 
+                                        T. n. Bins = Terrestral number of bins; M. n. Bins =  Marine number of bins
+                                        <br>
+                                        <br>"),
+                                   fluidRow(
+                                   column(2, numericInput("ter_bins", "T. n. Bins", 2)),
+                                   column(2, numericInput("sea_bins", "M. n. Bins", 2))
+                                   ),
                                    checkboxInput("plotMap", "Plot interactive map", value = FALSE),
                                    uiOutput("download.Map")
                                    )
                           ),
                         
-                        column(width = 12,
+                        column(width = 6,
                                leafletOutput("myMap")
                                )
                         )
-            )
+            ),
+            
+            tabItem(tabName = "help",
+                    fluidRow(
+                        column(width = 12,
+                        img(src = "italy_sea.png", height = "700px", hspace="10")
+                        )
+                        ))
         )
     )
 )
